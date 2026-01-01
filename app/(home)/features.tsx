@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Goggles from "@assets/goggles.png";
-import FeatureImg from "@assets/features-img.png"; // Replace with actual card images later
+import FeatureImg from "@assets/features-img.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,20 +45,26 @@ const Features = ({ className = "" }: FeaturesProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
+  // Clean ref setter to fix TypeScript error
+  const setCardRef = (index: number) => (el: HTMLDivElement | null) => {
+    if (el) {
+      cardsRef.current[index] = el;
+    }
+  };
+
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         cardsRef.current,
-        { y: 200, autoAlpha: 0 },
+        { y: 0 },
         {
-          y: -100, // Parallax upward
-          autoAlpha: 1,
-          stagger: 0.15,
-          ease: "power2.out",
+          y: 140,
+          stagger: 0.12,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top bottom-=100",
-            end: "bottom top+=100",
+            start: "top center",
+            end: "bottom center",
             scrub: true,
           },
         }
@@ -69,57 +75,53 @@ const Features = ({ className = "" }: FeaturesProps) => {
   }, []);
 
   return (
-    <div
+    <section
       ref={sectionRef}
-      className={`absolute inset-0 flex flex-col justify-center ${className} opacity-0 pointer-events-none`}
+      className={`features-section absolute inset-0 ${className} opacity-0 pointer-events-none`}
     >
-      <div className="relative max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div className="flex items-start gap-8 text-white mb-20">
-          <div className="text-[180px] leading-none opacity-20 font-Expletus_Sans">
-            02
-          </div>
-          <div className="pt-12">
-            <h2 className="text-6xl md:text-7xl font-Expletus_Sans">
-              Distinctive <br /> Aspects
-            </h2>
-          </div>
-        </div>
+      <div className="absolute top-[35%] left-[7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+        02
+      </div>
 
-        {/* Floating Goggles */}
-        <Image
-          src={Goggles}
-          alt="goggles"
-          className="absolute right-[-200px] top-[100px] w-[900px] rotate-[-20deg] opacity-80 pointer-events-none drop-shadow-2xl"
-          priority
-        />
+      {/* Main title - centered across both lenses */}
+      <h2 className="absolute top-[52%] left-[8%] text-6xl font-Expletus_Sans text-white leading-none">
+        Distinctive <br />
+        Aspects
+      </h2>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl">
+      {/* Floating Goggles - positioned like in Figma */}
+      <Image
+        src={Goggles}
+        alt="goggles"
+        className="absolute top-[38%] left-[-22%] rotate-[40deg]"
+      />
+
+      {/* Cards - exactly your original layout and styling */}
+      <div className="relative top-[-5%] right-[-50%] rotate-[-25deg]">
+        <div className="flex gap-7 justify-center">
           {featureData.map((feature, index) => (
             <div
               key={index}
-              ref={(el: HTMLDivElement | null) => {
-                if (el !== null) {
-                  cardsRef.current[index] = el;
-                }
-              }}
-              className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 text-white shadow-2xl"
+              ref={setCardRef(index)}
+              className="flex flex-col gap-5 w-[340px] rounded-[30px] border border-[#FFFFFF0A]
+                         bg-white/5 backdrop-blur-[50px] p-6 text-white"
             >
               <Image
                 src={feature.img}
                 alt={feature.title}
-                className="rounded-2xl mb-6"
+                className="rounded-2xl"
               />
-              <h3 className="text-3xl font-Expletus_Sans mb-4">
-                {feature.title}
-              </h3>
-              <p className="text-lg opacity-80">{feature.description}</p>
+
+              <h3 className="text-2xl font-Expletus_Sans">{feature.title}</h3>
+
+              <p className="text-base opacity-80 font-Expletus_Sans">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

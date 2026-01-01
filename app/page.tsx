@@ -7,21 +7,25 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@components/navbar";
 import Hero from "./(home)/hero";
 import Aboutus from "./(home)/aboutus";
-import Features from "./(home)/features"; // We'll update this to accept props or be overlay-friendly
+import Features from "./(home)/features";
+import Roadmap from "./(home)/roadmap";
+import Tokenomics from "./(home)/tokenomics";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Page = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const pinnedRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+    if (!pinnedRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Initial states
+      // ---------- INITIAL STATES ----------
       gsap.set(".hero", { autoAlpha: 1 });
       gsap.set(".about", { autoAlpha: 0, pointerEvents: "none" });
       gsap.set(".features-section", { autoAlpha: 0, pointerEvents: "none" });
+      gsap.set(".roadmap-section", { autoAlpha: 0, pointerEvents: "none" });
+      gsap.set(".tokenomics-section", { autoAlpha: 0, pointerEvents: "none" });
 
       gsap.set(".clipped-video", { autoAlpha: 1 });
       gsap.set(".full-video", { autoAlpha: 0 });
@@ -30,25 +34,41 @@ const Page = () => {
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: pinnedRef.current,
           start: "top top",
-          end: "+=400%", // Extended for Features reveal
+          end: "+=550%",
           scrub: true,
           pin: true,
         },
       });
 
-      // 1. Hero out + video switch + About in
+      // ---------- HERO → ABOUT ----------
       tl.to(".hero", { autoAlpha: 0, scale: 0.9 }, "heroOut")
         .to(".clipped-video", { autoAlpha: 0 }, "heroOut")
         .to(".full-video", { autoAlpha: 1 }, "heroOut")
         .to(".about", { autoAlpha: 1, pointerEvents: "auto" }, "heroOut")
         .to(".about-goggles", { scale: 1 }, "heroOut");
 
-      // 2. About out + Features in (after ~150% more scroll)
-      tl.to(".about", { autoAlpha: 0, pointerEvents: "none" }, "+=1") // delay in scrub units
-        .to(".features-section", { autoAlpha: 1, pointerEvents: "auto" }, "-=0.5");
-    }, sectionRef);
+      // ---------- ABOUT → FEATURES ----------
+      tl.to(".about", { autoAlpha: 0, pointerEvents: "none" }, "+=1").to(
+        ".features-section",
+        { autoAlpha: 1, pointerEvents: "auto" },
+        "<"
+      );
+
+      // ---------- FEATURES → ROADMAP ----------
+      tl.to(
+        ".features-section",
+        { autoAlpha: 0, pointerEvents: "none" },
+        "+=1"
+      ).to(".roadmap-section", { autoAlpha: 1, pointerEvents: "auto" }, "<");
+      // ROADMAP → TOKENOMICS
+      tl.to(".roadmap-section", { autoAlpha: 0 }, "+=1").to(
+        ".tokenomics-section",
+        { autoAlpha: 1, pointerEvents: "auto" },
+        "<"
+      );
+    }, pinnedRef);
 
     return () => ctx.revert();
   }, []);
@@ -60,33 +80,37 @@ const Page = () => {
           <Navbar />
         </div>
 
-        <section ref={sectionRef} className="relative w-full h-screen overflow-hidden">
-          {/* Clipped video (Hero only) */}
+        <section
+          ref={pinnedRef}
+          className="relative w-full h-screen overflow-hidden"
+        >
+          {/* CLIPPED VIDEO (Hero only) */}
           <div
             className="clipped-video absolute inset-0 z-0 overflow-hidden"
             style={{
-              clipPath: "polygon(51% 2%, 70% 10%, 74% 18%, 81% 30%, 78% 67%, 23% 67%, 23% 32%, 29% 20%, 35% 1%)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+              clipPath:
+                "polygon(51% 2%, 70% 10%, 74% 18%, 81% 30%, 78% 67%, 23% 67%, 23% 32%, 29% 20%, 35% 1%)",
             }}
           >
-            <video className="w-full h-full object-cover" autoPlay muted loop playsInline>
+            <video className="w-full h-full object-cover" autoPlay muted loop>
               <source src="/videos/bg-video.webm" type="video/webm" />
             </video>
           </div>
 
-          {/* Full video (About + Features) */}
+          {/* FULL VIDEO (About + Features + Roadmap) */}
           <div className="full-video absolute inset-0 z-0">
-            <video className="w-full h-full object-cover" autoPlay muted loop playsInline>
+            <video className="w-full h-full object-cover" autoPlay muted loop>
               <source src="/videos/bg-video.webm" type="video/webm" />
             </video>
           </div>
 
           <Hero />
           <Aboutus />
-          <Features className="features-section" /> {/* We'll add className prop support */}
-        </section>
+          <Features className="features-section" />
+          <Roadmap className="roadmap-section" />
 
-        {/* Next sections (Roadmap, Tokenomics, Footer) go here as normal sections */}
+          <Tokenomics className="tokenomics-section" />
+        </section>
       </div>
     </>
   );
