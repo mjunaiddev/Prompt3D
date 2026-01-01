@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@components/navbar";
 import Hero from "./(home)/hero";
 import Aboutus from "./(home)/aboutus";
+import Features from "./(home)/features"; // We'll update this to accept props or be overlay-friendly
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,59 +18,36 @@ const Page = () => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // ✅ FORCE INITIAL STATES (VERY IMPORTANT)
-      gsap.set(".hero", {
-        opacity: 1,
-        scale: 1,
-      });
+      // Initial states
+      gsap.set(".hero", { autoAlpha: 1 });
+      gsap.set(".about", { autoAlpha: 0, pointerEvents: "none" });
+      gsap.set(".features-section", { autoAlpha: 0, pointerEvents: "none" });
 
-      gsap.set(".about", {
-        opacity: 0,
-        pointerEvents: "none",
-      });
+      gsap.set(".clipped-video", { autoAlpha: 1 });
+      gsap.set(".full-video", { autoAlpha: 0 });
 
-      gsap.set(".about-goggles", {
-        scale: 0.85,
-      });
+      gsap.set(".about-goggles", { scale: 0.85 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=200%",
+          end: "+=400%", // Extended for Features reveal
           scrub: true,
           pin: true,
-          anticipatePin: 1,
         },
       });
 
-      // HERO OUT
-      tl.to(".hero", {
-        opacity: 0,
-        scale: 0.9,
-        ease: "power2.out",
-      });
+      // 1. Hero out + video switch + About in
+      tl.to(".hero", { autoAlpha: 0, scale: 0.9 }, "heroOut")
+        .to(".clipped-video", { autoAlpha: 0 }, "heroOut")
+        .to(".full-video", { autoAlpha: 1 }, "heroOut")
+        .to(".about", { autoAlpha: 1, pointerEvents: "auto" }, "heroOut")
+        .to(".about-goggles", { scale: 1 }, "heroOut");
 
-      // ABOUT IN (SYNCED)
-      tl.to(
-        ".about",
-        {
-          opacity: 1,
-          pointerEvents: "auto",
-          ease: "power2.out",
-        },
-        "<"
-      );
-
-      // GOGGLES COMING TOWARDS SCREEN
-      tl.to(
-        ".about-goggles",
-        {
-          scale: 1,
-          ease: "power3.out",
-        },
-        "<"
-      );
+      // 2. About out + Features in (after ~150% more scroll)
+      tl.to(".about", { autoAlpha: 0, pointerEvents: "none" }, "+=1") // delay in scrub units
+        .to(".features-section", { autoAlpha: 1, pointerEvents: "auto" }, "-=0.5");
     }, sectionRef);
 
     return () => ctx.revert();
@@ -77,49 +55,38 @@ const Page = () => {
 
   return (
     <>
-      <div className="bg-HeroBg bg-cover min-h-screen z-30">
-        <div className="fixed left-0 right-0 z-50">
+      <div className="bg-HeroBg min-h-screen">
+        <div className="fixed left-0 right-0 top-0 z-50">
           <Navbar />
         </div>
 
-        <section
-          ref={sectionRef}
-          className="relative w-full h-screen overflow-hidden"
-        >
-          {/* 🎥 Background Video with polygon clip-path */}
+        <section ref={sectionRef} className="relative w-full h-screen overflow-hidden">
+          {/* Clipped video (Hero only) */}
           <div
-            className="absolute inset-0 overflow-hidden"
+            className="clipped-video absolute inset-0 z-0 overflow-hidden"
             style={{
-              clipPath: "ellipse(33% 34% at 50% 38%)",
+              clipPath: "polygon(51% 2%, 70% 10%, 74% 18%, 81% 30%, 78% 67%, 23% 67%, 23% 32%, 29% 20%, 35% 1%)",
               boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
             }}
           >
-            <video
-              className="absolute inset-0 w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            >
+            <video className="w-full h-full object-cover" autoPlay muted loop playsInline>
               <source src="/videos/bg-video.webm" type="video/webm" />
             </video>
-
-            <div className="absolute inset-0 bg-[#D9D9D9]/10" />
           </div>
 
-          {/* glow */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 32% 38% at 50% 40%, rgba(99,102,241,0.45), transparent 80%)",
-            }}
-          />
+          {/* Full video (About + Features) */}
+          <div className="full-video absolute inset-0 z-0">
+            <video className="w-full h-full object-cover" autoPlay muted loop playsInline>
+              <source src="/videos/bg-video.webm" type="video/webm" />
+            </video>
+          </div>
 
           <Hero />
           <Aboutus />
+          <Features className="features-section" /> {/* We'll add className prop support */}
         </section>
+
+        {/* Next sections (Roadmap, Tokenomics, Footer) go here as normal sections */}
       </div>
     </>
   );

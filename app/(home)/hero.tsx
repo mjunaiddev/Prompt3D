@@ -14,7 +14,7 @@ const Hero = () => {
       </p>
       <h1 className="font-Expletus_Sans text-[54px] text-white">
         Worlds With Prompt³D
-      </h1>
+      </h1>      
     </div>
   );
 };
