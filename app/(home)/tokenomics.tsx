@@ -20,12 +20,11 @@ const Tokenomics = ({ className = "" }: TokenomicsProps) => {
       className={`tokenomics-section absolute inset-0 flex items-center justify-center text-white ${className}`}
     >
      
-      <div className="absolute top-[25%] left-[15%]">
-        <div className="text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+      <div className="absolute top-[30%] left-[15%]">
+        <div className="text-[200px] leading-[90px] font-Expletus_Sans text-white/40 select-none">
           04
         </div>
-        {/* Main title - centered across both lenses */}
-        <h2 className="text-6xl font-Expletus_Sans text-white leading-none">
+        <h2 className="text-8xl font-Expletus_Sans text-white leading-none mb-2">
           Tokenomics
         </h2>
         <p className="text-[40px] font-Expletus_Sans text-white leading-none">

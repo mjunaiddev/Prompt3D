@@ -4,8 +4,6 @@ import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import Goggles from "@assets/goggles.png";
 import FeatureImg from "@assets/features-img.png";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -79,31 +77,25 @@ const Features = ({ className = "" }: FeaturesProps) => {
       ref={sectionRef}
       className={`features-section absolute inset-0 ${className} opacity-0 pointer-events-none`}
     >
-      <div className="absolute top-[35%] left-[7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+      <div className="absolute top-[30%] left-[9%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
         02
       </div>
 
       {/* Main title - centered across both lenses */}
-      <h2 className="absolute top-[52%] left-[8%] text-6xl font-Expletus_Sans text-white leading-none">
+      <h2 className="absolute top-[45%] left-[9%] text-[82px] font-Expletus_Sans text-white leading-none">
         Distinctive <br />
         Aspects
       </h2>
-
-      {/* Floating Goggles - positioned like in Figma
-      <Image
-        src={Goggles}
-        alt="goggles"
-        className="features-goggles absolute top-[38%] left-[-22%] rotate-[40deg]"
-      /> */}
-
       {/* Cards - exactly your original layout and styling */}
-      <div className="relative top-[-5%] right-[-50%] rotate-[-25deg]">
+
+      <div className="absolute left-[50%] inset-0 bg-no-repeat bg-FeaturesBg" />
+      <div className="relative top-[-3%] right-[-50%] rotate-[-25deg]">
         <div className="flex gap-7 justify-center">
           {featureData.map((feature, index) => (
             <div
               key={index}
               ref={setCardRef(index)}
-              className="flex flex-col gap-5 w-[340px] rounded-[30px] border border-[#FFFFFF0A]
+              className="flex flex-col gap-4 w-[340px] rounded-[30px] border border-[#FFFFFF0A]
                          bg-white/5 backdrop-blur-[50px] p-6 text-white"
             >
               <Image
@@ -112,15 +104,16 @@ const Features = ({ className = "" }: FeaturesProps) => {
                 className="rounded-2xl"
               />
 
-              <h3 className="text-2xl font-Expletus_Sans">{feature.title}</h3>
+              <h3 className="text-3xl font-Expletus_Sans">{feature.title}</h3>
 
-              <p className="text-base opacity-80 font-Expletus_Sans">
+              <p className="text-base font-Expletus_Sans">
                 {feature.description}
               </p>
             </div>
           ))}
         </div>
       </div>
+      <div className="absolute left-[63%] top-[60%] inset-0 bg-no-repeat bg-FeaturesReverseBg " />
     </section>
   );
 };

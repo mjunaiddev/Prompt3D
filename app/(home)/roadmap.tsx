@@ -12,17 +12,13 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
     >
       <div className="relative w-full max-w-6xl text-white px-10">
         {/* Rings */}
-        <div className="absolute top-[20%] left-[-70%] inset-0 flex items-center justify-center">
-          <div className="w-[960px] h-[960px] rounded-full border-2 border-white/10 absolute" />
-          <div className="w-[716px] h-[716px] rounded-full border-2 border-white/20 absolute" />
-          <div className="w-[495px] h-[495px] rounded-full border-2 border-white/30 absolute" />
-        </div>
+        <div className="absolute bg-RoadmapBg bg-no-repeat top-[10%] left-[-28%] inset-0"></div>
 
-        <div className="absolute top-[29%] right-[-7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+        <div className="absolute top-[28%] right-[-7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
           03
         </div>
 
-        <h2 className="absolute top-[45%] right-[-25%] text-8xl font-Expletus_Sans text-white leading-none">
+        <h2 className="absolute top-[44%] right-[-25%] text-8xl font-Expletus_Sans text-white leading-none">
           Roadmap
         </h2>
 

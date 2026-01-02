@@ -42,6 +42,9 @@ const config: Config = {
       backgroundImage: {
         HeroBg: "url('/assets/herobg.png')",
         FooterBg: "url('/assets/footer-bg.png')",
+        FeaturesBg: "url('/assets/features-bg.png')",
+        FeaturesReverseBg: "url('/assets/features-reverse-bg.png')",
+        RoadmapBg: "url('/assets/roadmap-bg.png')",
       },
     },
   },

@@ -21,48 +21,12 @@ gsap.registerPlugin(ScrollTrigger);
    GOGGLES POSES (single source of truth)
 -------------------------------------------------- */
 const GOGGLES_POSES = {
-  hero: {
-    x: 0,
-    y: -45,
-    scale: 1,
-    rotation: 0,
-    autoAlpha: 1,
-  },
-  about: {
-    x: 0,
-    y: 0,
-    scale: 1.25,
-    rotation: 0,
-    autoAlpha: 1,
-  },
-  features: {
-    x: -420,
-    y: 175,
-    scale: 1,
-    rotation: 45,
-    autoAlpha: 1,
-  },
-  roadmap: {
-    x: 920,
-    y: -170,
-    scale: 1,
-    rotation: -23,
-    autoAlpha: 1,
-  },
-  tokenomics: {
-    x: 0,
-    y: 10,
-    scale: 1.5,
-    rotation: 0,
-    autoAlpha: 1,
-  },
-  footer: {
-    x: 0,       // Move to bottom center
-    y: 300,     // Move below view
-    scale: 1.2, // shrink slightly
-    rotation: 0,
-    autoAlpha: 1, // fade out while moving
-  },
+  hero: { x: 0, y: -45, scale: 1, rotation: 0, autoAlpha: 1 },
+  about: { x: 0, y: 0, scale: 1.15, rotation: 0, autoAlpha: 1 },
+  features: { x: -420, y: 175, scale: 1, rotation: 45, autoAlpha: 1 },
+  roadmap: { x: 920, y: -170, scale: 1, rotation: -23, autoAlpha: 1 },
+  tokenomics: { x: 0, y: 10, scale: 1.5, rotation: 0, autoAlpha: 1 },
+  footer: { x: 0, y: 300, scale: 1.2, rotation: 0, autoAlpha: 1 },
 };
 
 const Page = () => {
@@ -91,6 +55,7 @@ const Page = () => {
 
       const tl = gsap.timeline({
         scrollTrigger: {
+          id: "main-scroll",
           trigger: pinnedRef.current,
           start: "top top",
           end: "+=650%",
@@ -99,32 +64,38 @@ const Page = () => {
         },
       });
 
+      const gogglesTweenProps = (pose: any) => ({
+        ...pose,
+        ease: "power3.out",
+        duration: 2, // smooth tween
+      });
+
       /* ---------- HERO → ABOUT ---------- */
       tl.to(".hero", { autoAlpha: 0 }, "heroOut")
         .to(".clipped-video", { autoAlpha: 0 }, "heroOut")
         .to(".full-video", { autoAlpha: 1 }, "heroOut")
         .to(".about", { autoAlpha: 1, pointerEvents: "auto" }, "heroOut")
-        .to(".main-goggles", { ...GOGGLES_POSES.about, ease: "power3.out" }, "heroOut");
+        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.about), "heroOut");
 
       /* ---------- ABOUT → FEATURES ---------- */
       tl.to(".about", { autoAlpha: 0, pointerEvents: "none" }, "+=1")
         .to(".features-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", { ...GOGGLES_POSES.features, ease: "power3.out" }, "<");
+        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.features), "<");
 
       /* ---------- FEATURES → ROADMAP ---------- */
       tl.to(".features-section", { autoAlpha: 0, pointerEvents: "none" }, "+=1")
         .to(".roadmap-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", { ...GOGGLES_POSES.roadmap, ease: "power3.out" }, "<");
+        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.roadmap), "<");
 
       /* ---------- ROADMAP → TOKENOMICS ---------- */
       tl.to(".roadmap-section", { autoAlpha: 0 }, "+=1")
         .to(".tokenomics-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", { ...GOGGLES_POSES.tokenomics, ease: "power3.out" }, "<");
+        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.tokenomics), "<");
 
       /* ---------- TOKENOMICS → FOOTER ---------- */
       tl.to(".tokenomics-section", { autoAlpha: 0 }, "+=1")
         .to(".footer-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", { ...GOGGLES_POSES.footer, ease: "power3.out" }, "<");
+        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.footer), "<");
     }, pinnedRef);
 
     return () => ctx.revert();
@@ -135,8 +106,18 @@ const Page = () => {
       <div className="fixed left-0 right-0 top-0 z-50">
         <Navbar />
       </div>
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[45vh]
+  bg-gradient-to-b
+  from-transparent
+  via-[#0b0615]/70
+  to-[#0b0615]"
+      />
 
-      <section ref={pinnedRef} className="relative w-full h-screen overflow-hidden">
+      <section
+        ref={pinnedRef}
+        className="relative w-full h-screen overflow-hidden"
+      >
         {/* ---------- GLOBAL GOGGLES ---------- */}
         <Image
           src={Goggles}

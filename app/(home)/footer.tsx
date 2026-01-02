@@ -15,7 +15,8 @@ const Footer = ({ className = "" }: FooterProps) => {
     <section className={`footer-section ${className}`}>
       <div className="bg-FooterBg flex  w-[1340px] h-[260px] absolute top-28 left-1/2 -translate-x-1/2 px-20 py-10 text-white justify-between">
         <Image src={Logo} alt="logo" width={178} height={200} />
-        <ul>
+        <ul className="  bg-[linear-gradient(90.75deg,#FFFFFF_3.36%,rgba(255,255,255,0)_103.93%)]
+                 bg-clip-text text-transparent">
           <li>Menu</li>
           <li>Home</li>
           <li>Features</li>
@@ -41,7 +42,8 @@ const Footer = ({ className = "" }: FooterProps) => {
           </div>
         </div>
         <div className="flex flex-col">
-          <div>Contract Address</div>
+          <div className="  bg-[linear-gradient(90.75deg,#FFFFFF_3.36%,rgba(255,255,255,0)_103.93%)]
+                 bg-clip-text text-transparent">Contract Address</div>
           <div>0x0000000000000000000000000000000000</div>
         </div>
       </div>
