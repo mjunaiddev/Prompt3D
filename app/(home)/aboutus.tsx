@@ -8,12 +8,12 @@ const Aboutus = () => {
   return (
     <div className="about absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
       <div className="relative">
-        <Image
+        {/* <Image
           src={Goggles}
           alt="goggles"
           className="about-goggles drop-shadow-2xl"
           priority
-        />
+        /> */}
 
         {/* Content overlay inside the lenses */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

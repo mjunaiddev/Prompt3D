@@ -89,12 +89,12 @@ const Features = ({ className = "" }: FeaturesProps) => {
         Aspects
       </h2>
 
-      {/* Floating Goggles - positioned like in Figma */}
+      {/* Floating Goggles - positioned like in Figma
       <Image
         src={Goggles}
         alt="goggles"
-        className="absolute top-[38%] left-[-22%] rotate-[40deg]"
-      />
+        className="features-goggles absolute top-[38%] left-[-22%] rotate-[40deg]"
+      /> */}
 
       {/* Cards - exactly your original layout and styling */}
       <div className="relative top-[-5%] right-[-50%] rotate-[-25deg]">

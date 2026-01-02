@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import Goggles from "@assets/goggles.png";
 
@@ -11,12 +10,6 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
     <section
       className={`relative w-full h-full ${className} flex items-center justify-center`}
     >
-      {/* Floating Goggles - positioned like in Figma */}
-      <Image
-        src={Goggles}
-        alt="goggles"
-        className="absolute top-1 right-[-48%] rotate-[-23deg]"
-      />
       <div className="relative w-full max-w-6xl text-white px-10">
         {/* Rings */}
         <div className="absolute top-[20%] left-[-70%] inset-0 flex items-center justify-center">
@@ -25,12 +18,14 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
           <div className="w-[495px] h-[495px] rounded-full border-2 border-white/30 absolute" />
         </div>
 
-        {/* Title */}
-        <h2 className="absolute right-0 top-0 text-6xl font-Expletus_Sans opacity-80">
-          03 <br /> Roadmap
+        <div className="absolute top-[29%] right-[-7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+          03
+        </div>
+
+        <h2 className="absolute top-[45%] right-[-25%] text-8xl font-Expletus_Sans text-white leading-none">
+          Roadmap
         </h2>
 
-        {/* Cards */}
         <div className="relative w-full h-[960px] flex items-center justify-center">
           <div className="absolute top-[44%] left-[-3%] text-center border border-[#FFFFFF0A] bg-[#FFFFFF08] backdrop-blur-[50px] rounded-full w-[327px] h-[327px] flex flex-col items  justify-center">
             <h3 className="font-Expletus_Sans text-3xl">Alpha Phase</h3>

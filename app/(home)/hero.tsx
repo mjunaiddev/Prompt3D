@@ -8,7 +8,7 @@ const Hero = () => {
     <div
       className="hero absolute inset-0 z-10 flex flex-col items-center justify-center"
     >
-      <Image src={Goggles} alt="goggles" />
+      {/* <Image src={Goggles} alt="goggles" /> */}
       <p className="font-Expletus_Sans text-3xl bg-gradient-to-b from-white via-gray-300/60 to-gray-300/10 text-transparent bg-clip-text">
         Transforming Words into
       </p>
