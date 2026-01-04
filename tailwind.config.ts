@@ -45,6 +45,7 @@ const config: Config = {
         FeaturesBg: "url('/assets/features-bg.png')",
         FeaturesReverseBg: "url('/assets/features-reverse-bg.png')",
         RoadmapBg: "url('/assets/roadmap-bg.png')",
+        ChatBg: "url('/assets/chat-bg.png')",
       },
     },
   },

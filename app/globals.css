@@ -18,3 +18,47 @@ html {
   scrollbar-width: none; /* firefox */
 }
 
+/* Rewards custom scrollbar */
+.rewards-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* 🔴 REMOVE ALL SCROLLBAR BUTTONS (ARROWS) */
+.rewards-scrollbar::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.rewards-scrollbar::-webkit-scrollbar-button:start:decrement,
+.rewards-scrollbar::-webkit-scrollbar-button:end:increment,
+.rewards-scrollbar::-webkit-scrollbar-button:start:increment,
+.rewards-scrollbar::-webkit-scrollbar-button:end:decrement {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Track */
+.rewards-scrollbar::-webkit-scrollbar-track {
+  background: #ffffff1f;
+  border-radius: 10px;
+  margin: 10px 0;
+  /* shorter scrollbar */
+}
+
+/* Thumb */
+.rewards-scrollbar::-webkit-scrollbar-thumb {
+  background: #ea2ffe;
+  border-radius: 10px;
+}
+
+.rewards-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ea2ffe;
+}
+
+/* Firefox */
+.rewards-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ea2ffe #ffffff1f;
+}

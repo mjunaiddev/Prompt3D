@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -14,13 +14,17 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
   const alphaRef = useRef<HTMLDivElement>(null);
   const betaRef = useRef<HTMLDivElement>(null);
   const publicRef = useRef<HTMLDivElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const scrollProgressRef = useRef(0);
 
   useLayoutEffect(() => {
     const alpha = alphaRef.current;
     const beta = betaRef.current;
     const pub = publicRef.current;
+    const container = cardsContainerRef.current;
 
-    if (!alpha || !beta || !pub) return;
+    if (!alpha || !beta || !pub || !container) return;
 
     // Capture ORIGINAL positions
     const positions = [
@@ -29,21 +33,20 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
       { x: pub.offsetLeft, y: pub.offsetTop },
     ];
 
-    const update = () => {
-      const st = ScrollTrigger.getById("main-scroll");
-      if (!st) return;
+    let currentStep = 0;
 
-      // Roadmap window
-      const start = 0.45;
-      const end = 0.6;
-
-      if (st.progress < start || st.progress > end) return;
-
-      const local = (st.progress - start) / (end - start);
+    const updateCards = (progress: number) => {
+      // Clamp progress between 0 and 1
+      progress = Math.max(0, Math.min(1, progress));
+      scrollProgressRef.current = progress;
 
       let step = 0;
-      if (local > 0.33) step = 1;
-      if (local > 0.66) step = 2;
+      if (progress > 0.45) step = 1; // Changed from 0.33 to 0.45 - requires more scroll
+      if (progress > 0.8) step = 2; // Changed from 0.66 to 0.8 - requires more scroll
+
+      // Only animate if step changed
+      if (step === currentStep) return;
+      currentStep = step;
 
       const order =
         step === 0
@@ -74,9 +77,33 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
       });
     };
 
-    gsap.ticker.add(update);
-    return () => gsap.ticker.remove(update);
-  }, []);
+    // Initialize cards to step 0
+    gsap.set(alpha, { x: 0, y: 0 });
+    gsap.set(beta, { x: 0, y: 0 });
+    gsap.set(pub, { x: 0, y: 0 });
+
+    // Handle wheel event for scrolling
+    const handleWheel = (e: WheelEvent) => {
+      if (!isHovered) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Calculate scroll delta (scroll speed)
+      const delta = e.deltaY;
+      const scrollSpeed = 0.003; // Reduced for slower, more controlled scrolling
+
+      // Update progress
+      scrollProgressRef.current += delta * scrollSpeed;
+      updateCards(scrollProgressRef.current);
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+    };
+  }, [isHovered]);
 
   return (
     <section
@@ -94,7 +121,12 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
           Roadmap
         </h2>
 
-        <div className="relative w-full h-[960px] flex items-center justify-center">
+        <div
+          ref={cardsContainerRef}
+          className="relative w-full h-[960px] flex items-center justify-center cursor-pointer"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div
             ref={alphaRef}
             className="absolute top-[44%] left-[-3%] text-center border border-[#FFFFFF0A]
