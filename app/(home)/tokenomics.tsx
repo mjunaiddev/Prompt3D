@@ -19,9 +19,8 @@ const Tokenomics = ({ className = "" }: TokenomicsProps) => {
     <section
       className={`tokenomics-section absolute inset-0 flex items-center justify-center text-white ${className}`}
     >
-     
-      <div className="absolute top-[30%] left-[15%]">
-        <div className="text-[200px] leading-[90px] font-Expletus_Sans text-white/40 select-none">
+      <div className="hidden lg:block absolute top-[30%] left-[15%]">
+        <div className="text-5xl xl:text-[200px] leading-[90px] font-Expletus_Sans text-white/40 select-none">
           04
         </div>
         <h2 className="text-8xl font-Expletus_Sans text-white leading-none mb-2">
@@ -34,19 +33,32 @@ const Tokenomics = ({ className = "" }: TokenomicsProps) => {
           999,000,000
         </p>
       </div>
-      <div className="flex flex-col gap-5 w-[550px] absolute top-[25%] left-[58%]">
+      <div className="block lg:hidden">
+        <div className="absolute top-[30%] left-[10%] text-5xl xl:text-[200px]  font-Expletus_Sans text-white/40 select-none">
+          04
+        </div>
+        <h2 className="absolute top-[36%] left-[10%] text-2xl font-Expletus_Sans text-white leading-none mb-2">
+          Tokenomics
+        </h2>
+        <p className="absolute top-[32%] right-[10%] text-lg font-Expletus_Sans text-white leading-none">
+          Total Supply
+          <br />
+          999,000,000,000
+        </p>
+      </div>
+      <div className="flex flex-col gap-5 w-[300px] md:w-[550px] absolute top-[55%] md:top-[25%] md:left-[58%]">
         {tokenomicsData.map((item, index) => (
           <div
             key={index}
-            className={`relative border border-[#FFFFFF0A] bg-[#FFFFFF1F] backdrop-blur-2xl rounded-2xl px-3 py-2
-              ${index % 2 === 0 ? "mr-auto" : "ml-auto"} 
-              w-[460px] shadow-lg`}
+            className={`relative border border-[#FFFFFF0A] bg-[#FFFFFF1F] backdrop-blur-2xl rounded-2xl px-2 md:px-3 py-1 md:py-2
+              ${index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"} 
+              md:w-[460px] shadow-lg`}
           >
             {/* Label and Percentage */}
             <div className="flex justify-between items-center mb-1">
               <span className="font-Expletus_Sans text-lg">{item.label}</span>
               <span className="font-Expletus_Sans text-lg font-bold">
-                {item.percentage}%
+                {item.percentage}
               </span>
             </div>
 

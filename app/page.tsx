@@ -18,22 +18,79 @@ import Goggles from "@assets/goggles.png";
 gsap.registerPlugin(ScrollTrigger);
 
 /* --------------------------------------------------
-   GOGGLES POSES (single source of truth)
+   GOGGLES POSES (responsive)
 -------------------------------------------------- */
 const GOGGLES_POSES = {
-  hero: { x: 0, y: -45, scale: 1, rotation: 0, autoAlpha: 1 },
-  about: { x: 0, y: 0, scale: 1.15, rotation: 0, autoAlpha: 1 },
-  features: { x: -420, y: 175, scale: 1, rotation: 45, autoAlpha: 1 },
-  roadmap: { x: 920, y: -170, scale: 1, rotation: -23, autoAlpha: 1 },
-  tokenomics: { x: 0, y: 10, scale: 1.5, rotation: 0, autoAlpha: 1 },
-  footer: { x: 0, y: 300, scale: 1.2, rotation: 0, autoAlpha: 1 },
+  xl: {
+    hero: { x: 0, y: -45, scale: 1, rotation: 0, autoAlpha: 1 },
+    about: { x: 0, y: 0, scale: 1.15, rotation: 0, autoAlpha: 1 },
+    features: { x: -420, y: 175, scale: 1, rotation: 45, autoAlpha: 1 },
+    roadmap: { x: 920, y: -170, scale: 1, rotation: -23, autoAlpha: 1 },
+    tokenomics: { x: 0, y: 10, scale: 1.5, rotation: 0, autoAlpha: 1 },
+    footer: { x: 0, y: 300, scale: 1.2, rotation: 0, autoAlpha: 1 },
+  },
+  lg: {
+    hero: { x: 0, y: -35, scale: 0.95, rotation: 0, autoAlpha: 1 },
+    about: { x: 0, y: 0, scale: 1.1, rotation: 0, autoAlpha: 1 },
+    features: { x: -320, y: 140, scale: 0.95, rotation: 40, autoAlpha: 1 },
+    roadmap: { x: 700, y: -140, scale: 1, rotation: -20, autoAlpha: 1 },
+    tokenomics: { x: 0, y: 5, scale: 1.35, rotation: 0, autoAlpha: 1 },
+    footer: { x: 0, y: 270, scale: 1.2, rotation: 0, autoAlpha: 1 },
+  },
+  md: {
+    hero: { x: 0, y: -25, scale: 0.9, rotation: 0, autoAlpha: 1 },
+    about: { x: 0, y: 0, scale: 1.05, rotation: 0, autoAlpha: 1 },
+    features: { x: -250, y: 100, scale: 0.9, rotation: 35, autoAlpha: 1 },
+    roadmap: { x: 500, y: -100, scale: 0.95, rotation: -18, autoAlpha: 1 },
+    tokenomics: { x: 0, y: 0, scale: 1.2, rotation: 0, autoAlpha: 1 },
+    footer: { x: 0, y: 150, scale: 1.5, rotation: 0, autoAlpha: 1 },
+  },
+  sm: {
+    hero: { x: 0, y: -25, scale: 1.4, rotation: 0, autoAlpha: 1 },
+    about: { x: 0, y: -15, scale: 1.75, rotation: 0, autoAlpha: 1 },
+    features: { x: -45, y: -95, scale: 1.5, rotation: 45, autoAlpha: 1 },
+    roadmap: { x: 120, y: -200, scale: 1.5, rotation: -32, autoAlpha: 1 },
+    tokenomics: { x: 0, y: -90, scale: 1.75, rotation: 0, autoAlpha: 1 },
+    footer: { x: 0, y: 100, scale: 1.75, rotation: 0, autoAlpha: 1 },
+  },
+};
+
+/* --------------------------------------------------
+   VIDEO CLIP PATHS (responsive)
+-------------------------------------------------- */
+const VIDEO_CLIP = {
+  xl: "polygon(51% 2%, 70% 10%, 74% 18%, 81% 30%, 78% 67%, 23% 67%, 23% 32%, 29% 20%, 35% 1%)",
+  lg: "polygon(50% 3%, 68% 11%, 73% 19%, 80% 28%, 77% 65%, 23% 65%, 23% 33%, 28% 21%, 34% 2%)",
+  md: "polygon(50% 4%, 66% 12%, 72% 20%, 79% 26%, 76% 63%, 24% 63%, 24% 34%, 27% 22%, 33% 3%)",
+  sm: " inset(38% 14% 45% 14%)",
 };
 
 const Page = () => {
   const pinnedRef = useRef<HTMLDivElement>(null);
 
+  /* -------------------- Determine responsive poses -------------------- */
+  const getPose = () => {
+    if (typeof window === "undefined") return GOGGLES_POSES.xl;
+    const width = window.innerWidth;
+    if (width < 640) return GOGGLES_POSES.sm;
+    if (width < 768) return GOGGLES_POSES.md;
+    if (width < 1280) return GOGGLES_POSES.lg;
+    return GOGGLES_POSES.xl;
+  };
+
+  const getClipPath = () => {
+    if (typeof window === "undefined") return VIDEO_CLIP.xl;
+    const width = window.innerWidth;
+    if (width < 640) return VIDEO_CLIP.sm;
+    if (width < 768) return VIDEO_CLIP.md;
+    if (width < 1280) return VIDEO_CLIP.lg;
+    return VIDEO_CLIP.xl;
+  };
+
   useLayoutEffect(() => {
     if (!pinnedRef.current) return;
+    const poses = getPose();
+    const clipPath = getClipPath();
 
     const ctx = gsap.context(() => {
       /* ---------- INITIAL VISIBILITY ---------- */
@@ -44,12 +101,12 @@ const Page = () => {
       gsap.set(".tokenomics-section", { autoAlpha: 0, pointerEvents: "none" });
       gsap.set(".footer-section", { autoAlpha: 0, pointerEvents: "none" });
 
-      gsap.set(".clipped-video", { autoAlpha: 1 });
+      gsap.set(".clipped-video", { autoAlpha: 1, clipPath });
       gsap.set(".full-video", { autoAlpha: 0 });
 
       /* ---------- MAIN GOGGLES ---------- */
       gsap.set(".main-goggles", {
-        ...GOGGLES_POSES.hero,
+        ...poses.hero,
         transformOrigin: "50% 50%",
       });
 
@@ -67,35 +124,30 @@ const Page = () => {
       const gogglesTweenProps = (pose: any) => ({
         ...pose,
         ease: "power3.out",
-        duration: 2, // smooth tween
+        duration: 2,
       });
 
-      /* ---------- HERO → ABOUT ---------- */
       tl.to(".hero", { autoAlpha: 0 }, "heroOut")
         .to(".clipped-video", { autoAlpha: 0 }, "heroOut")
         .to(".full-video", { autoAlpha: 1 }, "heroOut")
         .to(".about", { autoAlpha: 1, pointerEvents: "auto" }, "heroOut")
-        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.about), "heroOut");
+        .to(".main-goggles", gogglesTweenProps(poses.about), "heroOut");
 
-      /* ---------- ABOUT → FEATURES ---------- */
       tl.to(".about", { autoAlpha: 0, pointerEvents: "none" }, "+=1")
         .to(".features-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.features), "<");
+        .to(".main-goggles", gogglesTweenProps(poses.features), "<");
 
-      /* ---------- FEATURES → ROADMAP ---------- */
       tl.to(".features-section", { autoAlpha: 0, pointerEvents: "none" }, "+=1")
         .to(".roadmap-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.roadmap), "<");
+        .to(".main-goggles", gogglesTweenProps(poses.roadmap), "<");
 
-      /* ---------- ROADMAP → TOKENOMICS ---------- */
       tl.to(".roadmap-section", { autoAlpha: 0 }, "+=1")
         .to(".tokenomics-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.tokenomics), "<");
+        .to(".main-goggles", gogglesTweenProps(poses.tokenomics), "<");
 
-      /* ---------- TOKENOMICS → FOOTER ---------- */
       tl.to(".tokenomics-section", { autoAlpha: 0 }, "+=1")
         .to(".footer-section", { autoAlpha: 1, pointerEvents: "auto" }, "<")
-        .to(".main-goggles", gogglesTweenProps(GOGGLES_POSES.footer), "<");
+        .to(".main-goggles", gogglesTweenProps(poses.footer), "<");
     }, pinnedRef);
 
     return () => ctx.revert();
@@ -106,12 +158,13 @@ const Page = () => {
       <div className="fixed left-0 right-0 top-0 z-50">
         <Navbar />
       </div>
+
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[45vh]
-  bg-gradient-to-b
-  from-transparent
-  via-[#0b0615]/70
-  to-[#0b0615]"
+          bg-gradient-to-b
+          from-transparent
+          via-[#0b0615]/70
+          to-[#0b0615]"
       />
 
       <section
@@ -127,13 +180,7 @@ const Page = () => {
         />
 
         {/* CLIPPED VIDEO */}
-        <div
-          className="clipped-video absolute inset-0 z-0 overflow-hidden"
-          style={{
-            clipPath:
-              "polygon(51% 2%, 70% 10%, 74% 18%, 81% 30%, 78% 67%, 23% 67%, 23% 32%, 29% 20%, 35% 1%)",
-          }}
-        >
+        <div className="clipped-video absolute inset-0 z-0 overflow-hidden">
           <video className="w-full h-full object-cover" autoPlay muted loop>
             <source src="/videos/bg-video.webm" type="video/webm" />
           </video>
@@ -146,6 +193,7 @@ const Page = () => {
           </video>
         </div>
 
+        {/* SECTIONS */}
         <Hero />
         <Aboutus />
         <Features className="features-section" />

@@ -111,13 +111,21 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
     >
       <div className="relative w-full max-w-6xl text-white px-10">
         {/* Rings */}
-        <div className="absolute bg-RoadmapBg bg-no-repeat top-[10%] left-[-28%] inset-0" />
+        <div
+          className="hidden lg:block absolute bg-RoadmapBg bg-contain bg-no-repeat
+             top-[10%] left-[-28%] inset-0"
+        />
 
-        <div className="absolute top-[28%] right-[-7%] text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
+        <div
+          className="block lg:hidden absolute sm:w-[390px] bg-RoadmapBg bg-contain bg-no-repeat
+             top-[55%] left-0 inset-0"
+        />
+
+        <div className="absolute top-[30%] right-[35%] xl:right-[-7%] text-5xl xl:text-[200px] leading-none font-Expletus_Sans text-white/40 select-none">
           03
         </div>
 
-        <h2 className="absolute top-[44%] right-[-25%] text-8xl font-Expletus_Sans text-white leading-none">
+        <h2 className="absolute top-[33%] right-[20%] text-3xl xl:text-8xl font-Expletus_Sans text-white leading-none">
           Roadmap
         </h2>
 
@@ -129,12 +137,14 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
         >
           <div
             ref={alphaRef}
-            className="absolute top-[44%] left-[-3%] text-center border border-[#FFFFFF0A]
+            className="absolute top-[64%]  text-center border border-[#FFFFFF0A]
                        bg-[#FFFFFF08] backdrop-blur-[50px] rounded-full
-                       w-[327px] h-[327px] flex flex-col justify-center"
+                       w-52 h-52 xl:w-[327px] xl:h-[327px] flex flex-col justify-center"
           >
-            <h3 className="font-Expletus_Sans text-3xl">Alpha Phase</h3>
-            <p className="font-Expletus_Sans text-base mt-2 w-72 mx-auto">
+            <h3 className="font-Expletus_Sans  text-base xl:text-3xl">
+              Alpha Phase
+            </h3>
+            <p className="font-Expletus_Sans text-xs xl:text-base mt-2 xl:w-72 mx-auto">
               Basic text-to-3D model generation using standard shapes. Simple
               web UI for prompt entry and rudimentary model previews.
             </p>
@@ -142,26 +152,28 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
 
           <div
             ref={betaRef}
-            className="absolute top-[75%] left-[37%] text-center border border-[#FFFFFF0A]
+            className="absolute top-[75%] left-[87%] text-center border border-[#FFFFFF0A]
                        bg-[#FFFFFF08] backdrop-blur-[50px] rounded-full
-                       w-[327px] h-[327px] flex flex-col justify-center"
+                       w-52 h-52 xl:w-[327px] xl:h-[327px] flex flex-col justify-center"
           >
-            <h3 className="font-Expletus_Sans text-3xl">Beta Phase</h3>
-            <p className="font-Expletus_Sans text-base mt-2 w-72 mx-auto">
+            <h3 className="font-Expletus_Sans text-base xl:text-3xl">
+              Beta Phase
+            </h3>
+            <p className="font-Expletus_Sans text-xs xl:text-base mt-2 xl:w-72 mx-auto">
               Enhanced geometry generation, rigging, advanced texturing.
             </p>
           </div>
 
           <div
             ref={publicRef}
-            className="absolute top-[75%] left-[-42%] text-center border border-[#FFFFFF0A]
+            className="absolute top-[75%] left-[-60%] text-center border border-[#FFFFFF0A]
                        bg-[#FFFFFF08] backdrop-blur-[50px] rounded-full
-                       w-[327px] h-[327px] flex flex-col justify-center"
+                        w-52 h-52 xl:w-[327px] xl:h-[327px] flex flex-col justify-center"
           >
-            <h3 className="font-Expletus_Sans text-3xl w-60 mx-auto">
+            <h3 className="font-Expletus_Sans  text-base xl:text-3xl w-60 mx-auto">
               Public Launch
             </h3>
-            <p className="font-Expletus_Sans text-base mt-2 w-72 mx-auto">
+            <p className="font-Expletus_Sans text-xs xl:text-base mt-2 xl:w-72 mx-auto">
               Official release with marketplace and collaboration tools.
             </p>
           </div>

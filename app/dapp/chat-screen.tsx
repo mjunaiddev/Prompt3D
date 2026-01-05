@@ -133,7 +133,7 @@ const ChatScreen = () => {
       <div className="md:hidden">
         <button
           onClick={() => setHistoryOpen(true)}
-          className="absolute top-4 left-4 text-white bg-[#00000033] p-2 rounded-md z-50"
+          className="absolute top-2 left-7 text-white bg-[#00000033] p-1 rounded-md z-50"
         >
           <VscHistory size={24} />
         </button>
@@ -146,7 +146,7 @@ const ChatScreen = () => {
         )}
 
         <div
-          className={`fixed left-0 top-0 z-50 h-[650px] w-[265px] backdrop-blur-[75px] border border-[#B441FF] rounded-r-[20px] p-4 transition-transform duration-300 ${
+          className={`fixed left-0 top-32 z-50 h-[600px] w-[265px] backdrop-blur-[75px] border border-[#B441FF] rounded-r-[20px] p-4 transition-transform duration-300 ${
             historyOpen ? "translate-x-0" : "-translate-x-[300px]"
           }`}
         >
