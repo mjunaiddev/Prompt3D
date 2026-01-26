@@ -41,8 +41,8 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
       scrollProgressRef.current = progress;
 
       let step = 0;
-      if (progress > 0.45) step = 1; // Changed from 0.33 to 0.45 - requires more scroll
-      if (progress > 0.8) step = 2; // Changed from 0.66 to 0.8 - requires more scroll
+      if (progress > 0.45) step = 1;
+      if (progress > 0.8) step = 2;
 
       // Only animate if step changed
       if (step === currentStep) return;
@@ -82,26 +82,47 @@ const Roadmap = ({ className = "" }: RoadmapProps) => {
     gsap.set(beta, { x: 0, y: 0 });
     gsap.set(pub, { x: 0, y: 0 });
 
-    // Handle wheel event for scrolling
+    // Handle wheel event for desktop scrolling
     const handleWheel = (e: WheelEvent) => {
       if (!isHovered) return;
 
       e.preventDefault();
       e.stopPropagation();
 
-      // Calculate scroll delta (scroll speed)
       const delta = e.deltaY;
-      const scrollSpeed = 0.003; // Reduced for slower, more controlled scrolling
+      const scrollSpeed = 0.003;
 
-      // Update progress
       scrollProgressRef.current += delta * scrollSpeed;
       updateCards(scrollProgressRef.current);
     };
 
+    // ----------------- MOBILE TOUCH SUPPORT -----------------
+    let lastTouchY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+      const delta = lastTouchY - currentY;
+      lastTouchY = currentY;
+
+      scrollProgressRef.current += delta * 0.005; // Adjust sensitivity
+      updateCards(scrollProgressRef.current);
+    };
+    // ---------------------------------------------------------
+
     container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    container.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     return () => {
       container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
     };
   }, [isHovered]);
 
